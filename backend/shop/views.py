@@ -10,16 +10,16 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class ProductsList(ListAPIView):
-    queryset = Product.objects.filter(active='Active').order_by('updated')
+    queryset = Product.objects.filter(active='Active').order_by('-updated')
     serializer_class = ProductSerializer
 
 
 class CategoriesList(ListAPIView):
-    queryset = Category.objects.order_by('updated')
+    queryset = Category.objects.order_by('-updated')
     serializer_class = CategorySerializer
 
 
 class GetProduct(RetrieveAPIView):
-    queryset = Product.objects.filter(active='Active').order_by('updated')
+    queryset = Product.objects.filter(active='Active').order_by('-updated')
     serializer_class = ProductSerializer
     lookup_field = 'slug'

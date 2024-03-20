@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o+0-wd6wy#-5m-55yfv%hq!d11^al2e()38++q389=rpk0)0*v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -45,12 +45,17 @@ ALLOWED_HOSTS = ['*']
 #     'http://bh018dd7r3.execute-api.us-west-2.amazonaws.com',
 # ]
 
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com'
+# ]
+
 CSRF_TRUSTED_ORIGINS = [
-    'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com'
+    'https://*.bh018dd7r3.execute-api.us-west-2.amazonaws.com',
+    'http://127.0.0.1:8000'
 ]
 
 # новое
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
+# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
 
 
 # Application definition
