@@ -13,7 +13,7 @@ class Category(models.Model):
         return self.name
 
     def get_image(self):
-        if not settings.DEBUG:
+        if settings.DEBUG:
             return 'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com' + self.image.url
         return 'http://127.0.0.1:8000' + self.image.url
 
@@ -39,7 +39,7 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 
     def get_image(self):
-        if not settings.DEBUG:
+        if settings.DEBUG:
             return 'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com' + self.image.url
         return 'http://127.0.0.1:8000' + self.image.url
 

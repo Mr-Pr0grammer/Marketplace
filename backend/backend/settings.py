@@ -50,8 +50,8 @@ ALLOWED_HOSTS = ['*']
 # ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.bh018dd7r3.execute-api.us-west-2.amazonaws.com',
-    'http://127.0.0.1:8000'
+    'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com',
+    # 'http://127.0.0.1:8000'
 ]
 
 # новое
