@@ -28,10 +28,26 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com/',
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com'
+# ]
 
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://*.bh018dd7r3.execute-api.us-west-2.amazonaws.com',
+#     'https://*.127.0.0.1'
+# ]
+
+
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com/',
+#     'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com',
+#     'http://bh018dd7r3.execute-api.us-west-2.amazonaws.com/',
+#     'http://bh018dd7r3.execute-api.us-west-2.amazonaws.com',
+# ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com'
+]
 
 
 # Application definition
