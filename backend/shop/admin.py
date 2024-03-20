@@ -31,7 +31,7 @@ class ProductAdmin(admin.ModelAdmin):
     search_help_text = 'Введите название товара'
     list_display_links = ('name',)
     prepopulated_fields = {'slug': ('name',)}
-    fields = (('category', 'active'), ('name', 'slug'), ('short_description', 'image'), 'long_description')
+    fields = (('category', 'active'), ('name', 'slug'), ('short_description', 'price'), 'image', 'long_description')
 
 
 admin.site.register(Category, CategoryAdmin)

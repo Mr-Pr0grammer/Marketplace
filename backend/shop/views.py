@@ -6,6 +6,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from .models import Category, Product
 from .serializers import ProductSerializer, CategorySerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class ProductsList(ListAPIView):

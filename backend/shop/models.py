@@ -5,7 +5,7 @@ from django_resized import ResizedImageField
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
     slug = models.SlugField(unique=True, max_length=110)
-    image = ResizedImageField(upload_to='category_pics/', size=[500, 500])
+    image = ResizedImageField(upload_to='category_pics/', size=[500, 500], blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     updated = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 
@@ -26,7 +26,7 @@ class Product(models.Model):
         ('Inactive', 'inactive'),
     ]
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
-    image = ResizedImageField(upload_to='product_pics/', size=[300, 300])
+    image = ResizedImageField(upload_to='product_pics/', size=[300, 300], blank=True, null=True)
     name = models.CharField(max_length=100, verbose_name='Название')
     slug = models.SlugField(unique=True, max_length=110)
     price = models.DecimalField(decimal_places=2, verbose_name='Цена', max_digits=10)
