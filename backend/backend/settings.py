@@ -49,6 +49,9 @@ CSRF_TRUSTED_ORIGINS = [
     'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com'
 ]
 
+# новое
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
+
 
 # Application definition
 
