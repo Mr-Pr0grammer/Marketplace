@@ -23,3 +23,9 @@ class GetProduct(RetrieveAPIView):
     queryset = Product.objects.filter(active='Active').order_by('-updated')
     serializer_class = ProductSerializer
     lookup_field = 'slug'
+
+
+# class ProductsStats(APIView):
+#     def get(self, request):
+#         products_number = Product.objects.all().count()
+#         products_average_price = Product.objects.aggregate('price'.av)
