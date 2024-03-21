@@ -13,9 +13,9 @@ class Category(models.Model):
         return self.name
 
     def get_image(self):
-        if settings.DEBUG:
-            return 'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com' + self.image.url
-        return 'http://127.0.0.1:8000' + self.image.url
+        # if settings.DEBUG:
+        return 'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com' + self.image.url
+        # return 'http://127.0.0.1:8000' + self.image.url
 
     class Meta:
         verbose_name = 'Категория'
@@ -39,9 +39,9 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')
 
     def get_image(self):
-        if settings.DEBUG:
-            return 'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com' + self.image.url
-        return 'http://127.0.0.1:8000' + self.image.url
+        # if settings.DEBUG:
+        return 'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com' + self.image.url
+        # return 'http://127.0.0.1:8000' + self.image.url
 
     def __str__(self):
         return self.name

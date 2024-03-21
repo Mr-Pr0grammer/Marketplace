@@ -11,6 +11,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/shop/', include('shop.urls')),
+    path('api/drf-auth/', include('rest_framework.urls')),
     path('auth/', include('djoser.urls')),
     re_path(r'^auth/', include('djoser.urls.jwt')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
