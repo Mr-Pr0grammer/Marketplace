@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Category, Product
+from django.utils.safestring import mark_safe
+
+from .models import Category, Product, ProductCart, ProductCartItem
 
 
 class ProductInline(admin.TabularInline):
@@ -20,10 +22,11 @@ class CategoryAdmin(admin.ModelAdmin):
     inlines = (ProductInline,)
     search_fields = ('name',)
     search_help_text = 'Введите категорию'
+    show_full_result_count = True
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'price', 'active', 'created', 'updated')
+    list_display = ('get_image', 'name', 'category', 'price', 'active', 'created', 'updated')
     list_editable = ('price', 'active')
     list_filter = ('active', 'created', 'updated')
     list_per_page = 50
@@ -32,8 +35,32 @@ class ProductAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     prepopulated_fields = {'slug': ('name',)}
     fields = (('category', 'active'), ('name', 'slug'), ('short_description', 'price'), 'image', 'long_description')
+    show_full_result_count = True
+
+    def get_image(self, obj):
+        if obj.image:
+            return mark_safe(f'<img src="{obj.image.url}" width="75">')
+        else:
+            return '-'
+
+
+class ProductCartItemInline(admin.TabularInline):
+    model = ProductCartItem
+    extra = 0
+    show_change_link = True
+    fields = ('product', 'quantity')
+
+
+class ProductCartAdmin(admin.ModelAdmin):
+    inlines = (ProductCartItemInline,)
+    search_fields = ('user',)
+    search_help_text = 'Введите имя пользователя'
+    list_display = ('user',)
+    list_display_links = ('user',)
+    list_per_page = 50
+    show_full_result_count = True
 
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
-
+admin.site.register(ProductCart, ProductCartAdmin)

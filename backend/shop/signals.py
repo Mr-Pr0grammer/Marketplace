@@ -1,6 +1,7 @@
+from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_save, pre_delete
-from .models import Product, Category
+from .models import Product, Category, ProductCart
 import os
 from django.conf import settings
 
@@ -57,3 +58,9 @@ def delete_product(sender, instance, **kwargs):
         image_path = os.path.join(settings.MEDIA_ROOT, str(instance.image))
         if os.path.exists(image_path):
             os.remove(image_path)
+
+
+@receiver(post_save, sender=User)
+def create_product_cart(sender, created, instance, **kwargs):
+    if created:
+        ProductCart.objects.create(user=instance)
