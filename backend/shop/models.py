@@ -33,6 +33,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название')
     slug = models.SlugField(unique=True, max_length=110)
     price = models.DecimalField(decimal_places=2, verbose_name='Цена $', max_digits=10)
+    quantity = models.PositiveIntegerField(default=1, verbose_name='Кол-во на складе')
     short_description = models.CharField(max_length=255, verbose_name='Краткое описание', default='Тут должно быть описание')
     long_description = models.TextField(verbose_name='Большое описание', default='Тут должно быть описание')
     active = models.CharField(max_length=20, choices=CHOICE, verbose_name='Активность на сайте')

@@ -9,3 +9,4 @@ def product_exists(request):
         return product
     except Product.DoesNotExist:
         return Response(data='No such product', status=status.HTTP_404_NOT_FOUND)
+

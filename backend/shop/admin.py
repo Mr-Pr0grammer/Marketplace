@@ -6,7 +6,7 @@ from .models import Category, Product, ProductCart, ProductCartItem
 
 class ProductInline(admin.TabularInline):
     model = Product
-    fields = ('name', 'slug', 'price', 'active', 'image')
+    fields = ('name', 'slug', 'quantity', 'price', 'active', 'image')
     prepopulated_fields = {'slug': ('name',)}
     show_change_link = True
     extra = 0
@@ -26,15 +26,15 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('get_image', 'name', 'category', 'price', 'active', 'created', 'updated')
-    list_editable = ('price', 'active')
+    list_display = ('get_image', 'name', 'category', 'quantity', 'price', 'active', 'created', 'updated')
+    list_editable = ('quantity', 'price', 'active')
     list_filter = ('active', 'created', 'updated')
     list_per_page = 50
     search_fields = ('name',)
     search_help_text = 'Введите название товара'
     list_display_links = ('name',)
     prepopulated_fields = {'slug': ('name',)}
-    fields = (('category', 'active'), ('name', 'slug'), ('short_description', 'price'), 'image', 'long_description')
+    fields = (('category', 'active'), ('name', 'slug'), ('quantity', 'price'), 'image', 'short_description', 'long_description')
     show_full_result_count = True
 
     def get_image(self, obj):

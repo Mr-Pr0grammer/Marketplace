@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 from .models import Category, Product, ProductCartItem, ProductCart
 from .serializers import ProductSerializer, CategorySerializer, ProductCartItemSerializer
 from rest_framework.permissions import IsAuthenticated
-from django.http import Http404
 from .utils import product_exists
+
 
 class ProductsList(ListAPIView):
     queryset = Product.objects.filter(active='Active').order_by('-updated')
@@ -40,16 +40,24 @@ class ProductCartItemAPIView(APIView):
         if serializer.is_valid():
             cart = ProductCart.objects.get(user=request.user)
             product = product_exists(request)
+            if 'quantity' not in request.data:
+                quantity = 1
+            else:
+                quantity = request.data['quantity']
             try:
                 cart_item = ProductCartItem.objects.get(product=product, cart=cart)
-                cart_item.quantity = request.data['quantity']
+                if quantity > product.quantity:
+                    return Response(data='Exceeded quantity available', status=status.HTTP_400_BAD_REQUEST)
+                cart_item.quantity = quantity
                 cart_item.save()
                 return Response(data='Product quantity was updated', status=status.HTTP_202_ACCEPTED)
             except ProductCartItem.DoesNotExist:
+                if quantity > product.quantity:
+                    return Response(data='Exceeded quantity available', status=status.HTTP_400_BAD_REQUEST)
                 ProductCartItem.objects.create(
                     product=product,
                     cart=cart,
-                    quantity=serializer.data['quantity']
+                    quantity=quantity
                 )
             return Response(data='Product has been added', status=status.HTTP_201_CREATED)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
