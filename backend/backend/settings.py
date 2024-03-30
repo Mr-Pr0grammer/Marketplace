@@ -24,38 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-o+0-wd6wy#-5m-55yfv%hq!d11^al2e()38++q389=rpk0)0*v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
-
-# CSRF_TRUSTED_ORIGINS = [
-#     'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com'
-# ]
-
-# CSRF_TRUSTED_ORIGINS = [
-#     'https://*.bh018dd7r3.execute-api.us-west-2.amazonaws.com',
-#     'https://*.127.0.0.1'
-# ]
-
-
-# CSRF_TRUSTED_ORIGINS = [
-#     'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com/',
-#     'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com',
-#     'http://bh018dd7r3.execute-api.us-west-2.amazonaws.com/',
-#     'http://bh018dd7r3.execute-api.us-west-2.amazonaws.com',
-# ]
-
-# CSRF_TRUSTED_ORIGINS = [
-#     'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com'
-# ]
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://bh018dd7r3.execute-api.us-west-2.amazonaws.com',
-    # 'http://127.0.0.1:8000'
+ALLOWED_HOSTS = [
+    'MCkuzka.pythonanywhere.com',
+    '127.0.0.1',
 ]
 
-# новое
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTOCOL", "https")
+# HTTPS
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT= True
 
 
 # Application definition
@@ -71,6 +51,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'djoser',
     'shop.apps.ShopConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -112,23 +93,23 @@ CORS_ALLOWED_ORIGINS = [
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'PVANOOSBSVyYCoDYeDkxbjLQTiIPcJlF',
-        'HOST': 'viaduct.proxy.rlwy.net',
-        'PORT': '22528',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'railway',
+#         'USER': 'postgres',
+#         'PASSWORD': 'PVANOOSBSVyYCoDYeDkxbjLQTiIPcJlF',
+#         'HOST': 'viaduct.proxy.rlwy.net',
+#         'PORT': '22528',
+#     }
+# }
 
 
 
@@ -216,6 +197,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
