@@ -21,7 +21,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_per_page = 50
     inlines = (ProductInline,)
     search_fields = ('name',)
-    search_help_text = 'Введите категорию'
+    search_help_text = 'Enter category'
     show_full_result_count = True
 
 
@@ -31,10 +31,10 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('active', 'created', 'updated')
     list_per_page = 50
     search_fields = ('name',)
-    search_help_text = 'Введите название товара'
+    search_help_text = 'Enter product name'
     list_display_links = ('name',)
     prepopulated_fields = {'slug': ('name',)}
-    fields = (('category', 'active'), ('name', 'slug'), ('quantity', 'price'), 'image', 'short_description', 'long_description')
+    fields = (('category', 'active'), ('name', 'slug'), ('quantity', 'price'), ('discount', 'image'), 'short_description', 'long_description')
     show_full_result_count = True
 
     def get_image(self, obj):
@@ -54,7 +54,7 @@ class ProductCartItemInline(admin.TabularInline):
 class ProductCartAdmin(admin.ModelAdmin):
     inlines = (ProductCartItemInline,)
     search_fields = ('user',)
-    search_help_text = 'Введите имя пользователя'
+    search_help_text = 'Enter username'
     list_display = ('user',)
     list_display_links = ('user',)
     list_per_page = 50

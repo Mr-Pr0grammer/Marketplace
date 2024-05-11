@@ -3,13 +3,13 @@ from django.db import models
 
 
 class UserComplaint(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    text = models.TextField(verbose_name='Текст')
-    sent_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата отправки')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    sent_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'От {self.user}'
+        return f'From {self.user}'
 
     class Meta:
-        verbose_name = 'Жалоба'
-        verbose_name_plural = 'Жалобы'
+        verbose_name = 'Complaint'
+        verbose_name_plural = 'Complaints'

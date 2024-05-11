@@ -7,7 +7,7 @@ class UserComplaintAdmin(admin.ModelAdmin):
     list_display_links = ('user',)
     list_per_page = 50
     search_fields = ('user',)
-    search_help_text = 'Введите имя'
+    search_help_text = 'Enter username'
 
 
 admin.site.register(UserComplaint, UserComplaintAdmin)
