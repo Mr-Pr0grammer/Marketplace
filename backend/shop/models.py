@@ -3,6 +3,7 @@ from django.db import models
 from django_resized import ResizedImageField
 from django.conf import settings
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, max_length=110)
@@ -14,7 +15,9 @@ class Category(models.Model):
         return self.name
 
     def get_image(self):
-        return 'https://mckuzka.pythonanywhere.com' + self.image.url
+        if self.image.url:
+            return 'https://mckuzka.pythonanywhere.com' + self.image.url
+        return None
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -39,7 +42,9 @@ class Product(models.Model):
     updated = models.DateTimeField(auto_now=True, verbose_name='Updated at')
 
     def get_image(self):
-        return 'https://mckuzka.pythonanywhere.com' + self.image.url
+        if self.image.url:
+            return 'https://mckuzka.pythonanywhere.com' + self.image.url
+        return None
 
     def __str__(self):
         return self.name

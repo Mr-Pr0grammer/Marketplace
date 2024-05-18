@@ -77,15 +77,10 @@ class ProductCartItemAPIView(APIView):
 
 
 class DeleteCartItemsAll(APIView):
-
     def delete(self, request):
-        print('1')
         cart = ProductCart.objects.get(user=request.user)
-        print(2)
         cart_items = ProductCartItem.objects.filter(cart=cart)
-        print(3)
         cart_items.delete()
-        print(4)
         return Response(data='All items have been deleted!', status=status.HTTP_200_OK)
 
 

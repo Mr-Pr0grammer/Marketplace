@@ -104,17 +104,6 @@ DATABASES = {
     }
 }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'railway',
-#         'USER': 'postgres',
-#         'PASSWORD': 'PVANOOSBSVyYCoDYeDkxbjLQTiIPcJlF',
-#         'HOST': 'viaduct.proxy.rlwy.net',
-#         'PORT': '22528',
-#     }
-# }
-
 
 
 # Password validation
@@ -190,7 +179,7 @@ SIMPLE_JWT = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 
