@@ -6,16 +6,16 @@ from .models import Category, Product, ProductCart, ProductCartItem
 
 class ProductInline(admin.TabularInline):
     model = Product
-    fields = ('name', 'slug', 'quantity', 'price', 'active', 'image')
+    fields = ('name', 'slug', 'quantity', 'price', 'active')
     prepopulated_fields = {'slug': ('name',)}
     show_change_link = True
     extra = 0
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    fields = (('name', 'slug'), 'image')
+    fields = (('name', 'slug'), ('title', 'description'), 'image')
     list_filter = ('created', 'updated')
-    list_display = ('name', 'created', 'updated')
+    list_display = ('get_image', 'name', 'created', 'updated')
     list_display_links = ('name',)
     prepopulated_fields = {'slug': ('name',)}
     list_per_page = 50
@@ -23,6 +23,12 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     search_help_text = 'Enter category'
     show_full_result_count = True
+
+    def get_image(self, obj):
+        if obj.image:
+            return mark_safe(f'<img src="{obj.image.url}" width="75">')
+        else:
+            return '-'
 
 
 class ProductAdmin(admin.ModelAdmin):

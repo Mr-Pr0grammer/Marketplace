@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -83,6 +84,29 @@ class DeleteCartItemsAll(APIView):
         cart_items.delete()
         return Response(data='All items have been deleted!', status=status.HTTP_200_OK)
 
+
+class AddProductView(APIView):
+    permission_classes = (IsAuthenticated,)
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request):
+        serializer = ProductSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        category = Category.objects.get(slug=request.data['slug'])
+        Product.objects.create(
+            owner=request.user,
+            category=category,
+            discount=request.data['discount'],
+            image=request.data['image'],
+            name=request.data['name'],
+            slug=request.data['slug'],
+            price=request.data['price'],
+            quantity=request.data['quantity'],
+            short_description=request.data['short_description'],
+            long_description=request.data['long_description'],
+            active=request.data['active']
+        )
+        return Response(status=status.HTTP_200_OK)
 
 
 

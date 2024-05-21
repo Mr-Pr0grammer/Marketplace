@@ -6,6 +6,8 @@ from django.conf import settings
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, blank=True, null=True)
+    description = models.CharField(max_length=250, blank=True, null=True)
     slug = models.SlugField(unique=True, max_length=110)
     image = ResizedImageField(upload_to='category_pics/', size=[500, 500], blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -25,9 +27,10 @@ class Category(models.Model):
 
 class Product(models.Model):
     CHOICE = [
-        ('Active', 'active'),
-        ('Inactive', 'inactive'),
+        ('Active', 'Active'),
+        ('Inactive', 'Inactive'),
     ]
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     discount = models.PositiveIntegerField(default=0)
     image = ResizedImageField(upload_to='product_pics/', size=[300, 300], blank=True, null=True)
@@ -37,7 +40,7 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     short_description = models.CharField(max_length=255, verbose_name='Short description', default='Description')
     long_description = models.TextField(verbose_name='Long description', default='Description')
-    active = models.CharField(max_length=20, choices=CHOICE)
+    active = models.CharField(max_length=20, choices=CHOICE, default='Active')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Created at')
     updated = models.DateTimeField(auto_now=True, verbose_name='Updated at')
 
