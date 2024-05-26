@@ -8,6 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
         # fields = ('id', 'name', 'slug', 'get_image', 'created', 'updated')
         fields = '__all__'
 
+
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     class Meta:

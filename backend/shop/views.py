@@ -16,6 +16,25 @@ class ProductsList(ListAPIView):
     serializer_class = ProductSerializer
 
 
+class ProductsListByCategory(ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        category = self.kwargs.get('slug')
+        return Product.objects.filter(active='Active', category__slug=category).order_by('-updated')
+
+
+class ProductsListByPrice(ListAPIView):
+    serializer_class = ProductSerializer
+
+    def get_queryset(self):
+        price = self.kwargs.get('str')
+        if price == 'upper':
+            return Product.objects.order_by('-price')
+        elif price == 'lower':
+            return Product.objects.order_by('price')
+
+
 class CategoriesList(ListAPIView):
     queryset = Category.objects.order_by('-updated')
     serializer_class = CategorySerializer
@@ -33,7 +52,7 @@ class ProductCartItemAPIView(APIView):
     def get(self, request):
         cart = ProductCart.objects.get(user=request.user)
         cart_items = Product.objects.filter(cart_items__cart=cart).all()
-        serializer = ProductSerializer(cart_items, many=True)
+        serializer = ProductSerializer(cart_items, many=True, context={'request': request})
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
@@ -90,23 +109,52 @@ class AddProductView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
+        # data = request.data.copy()  # Make a mutable copy of request data
+        # category_id = request.data.get('category')
+        #
+        # if not category_id:
+        #     return Response({'error': 'No category ID provided'}, status=status.HTTP_400_BAD_REQUEST)
+        #
+        # try:
+        #     category = Category.objects.get(id=category_id)
+        # except Category.DoesNotExist:
+        #     return Response({'error': 'Invalid category ID provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Add the full category data to the request data
+        # data['category'] = {
+        #     'id': category.id,
+        #     'name': category.name,
+        #     'title': category.title,
+        #     'description': category.description,
+        #     'slug': category.slug,
+        #     'image': category.image.url if category.image else None,
+        #     'created': category.created.isoformat(),
+        #     'updated': category.updated.isoformat()
+        # }
+
         serializer = ProductSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        category = Category.objects.get(slug=request.data['slug'])
-        Product.objects.create(
-            owner=request.user,
-            category=category,
-            discount=request.data['discount'],
-            image=request.data['image'],
-            name=request.data['name'],
-            slug=request.data['slug'],
-            price=request.data['price'],
-            quantity=request.data['quantity'],
-            short_description=request.data['short_description'],
-            long_description=request.data['long_description'],
-            active=request.data['active']
-        )
-        return Response(status=status.HTTP_200_OK)
+        serializer.o
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        # category = Category.objects.get(slug=request.data['slug'])
+        # Product.objects.create(
+        #     owner=request.user,
+        #     category=category,
+        #     discount=request.data['discount'],
+        #     image=request.data['image'],
+        #     name=request.data['name'],
+        #     slug=request.data['slug'],
+        #     price=request.data['price'],
+        #     quantity=request.data['quantity'],
+        #     short_description=request.data['short_description'],
+        #     long_description=request.data['long_description'],
+        #     active=request.data['active']
+        # )
+
 
 
 
