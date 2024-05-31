@@ -6,33 +6,53 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
 from .utils import product_exists
 from .models import Category, Product, ProductCartItem, ProductCart
-from .serializers import ProductSerializer, CategorySerializer, ProductCartItemSerializer
+from .serializers import ProductSerializer,ProductAddSerializer, CategorySerializer, ProductCartItemSerializer
 
 
-class ProductsList(ListAPIView):
-    queryset = Product.objects.filter(active='Active').order_by('-updated')
+# class ProductsList(ListAPIView):
+#     queryset = Product.objects.filter(active='Active').order_by('-updated')
+#     serializer_class = ProductSerializer
+
+
+# class ProductsListByCategory(ListAPIView):
+#     serializer_class = ProductSerializer
+#
+#     def get_queryset(self):
+#         category = self.kwargs.get('slug')
+#         return Product.objects.filter(active='Active', category__slug=category).order_by('-updated')
+#
+#
+# class ProductsListByPrice(ListAPIView):
+#     serializer_class = ProductSerializer
+#
+#     def get_queryset(self):
+#         price = self.kwargs.get('str')
+#         if price == 'upper':
+#             return Product.objects.order_by('-price')
+#         elif price == 'lower':
+#             return Product.objects.order_by('price')
+
+
+class ProductsListFilterView(ListAPIView):
+    queryset = Product.objects.filter(active='Active').all()
     serializer_class = ProductSerializer
+    filter_backends = (DjangoFilterBackend, OrderingFilter, SearchFilter)
+    filterset_fields = ('category_id',)
+    ordering_fields = ('price', 'name')
+    search_fields = ('name',)
 
 
-class ProductsListByCategory(ListAPIView):
+
+class ProductsListByOwner(ListAPIView):
     serializer_class = ProductSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        category = self.kwargs.get('slug')
-        return Product.objects.filter(active='Active', category__slug=category).order_by('-updated')
-
-
-class ProductsListByPrice(ListAPIView):
-    serializer_class = ProductSerializer
-
-    def get_queryset(self):
-        price = self.kwargs.get('str')
-        if price == 'upper':
-            return Product.objects.order_by('-price')
-        elif price == 'lower':
-            return Product.objects.order_by('price')
+        return Product.objects.filter(owner=self.request.user).order_by('-created')
 
 
 class CategoriesList(ListAPIView):
@@ -109,51 +129,14 @@ class AddProductView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
-        # data = request.data.copy()  # Make a mutable copy of request data
-        # category_id = request.data.get('category')
-        #
-        # if not category_id:
-        #     return Response({'error': 'No category ID provided'}, status=status.HTTP_400_BAD_REQUEST)
-        #
-        # try:
-        #     category = Category.objects.get(id=category_id)
-        # except Category.DoesNotExist:
-        #     return Response({'error': 'Invalid category ID provided'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Add the full category data to the request data
-        # data['category'] = {
-        #     'id': category.id,
-        #     'name': category.name,
-        #     'title': category.title,
-        #     'description': category.description,
-        #     'slug': category.slug,
-        #     'image': category.image.url if category.image else None,
-        #     'created': category.created.isoformat(),
-        #     'updated': category.updated.isoformat()
-        # }
-
-        serializer = ProductSerializer(data=request.data)
-        serializer.o
+        serializer = ProductAddSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # category = Category.objects.get(slug=request.data['slug'])
-        # Product.objects.create(
-        #     owner=request.user,
-        #     category=category,
-        #     discount=request.data['discount'],
-        #     image=request.data['image'],
-        #     name=request.data['name'],
-        #     slug=request.data['slug'],
-        #     price=request.data['price'],
-        #     quantity=request.data['quantity'],
-        #     short_description=request.data['short_description'],
-        #     long_description=request.data['long_description'],
-        #     active=request.data['active']
-        # )
+
 
 
 

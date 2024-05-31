@@ -17,6 +17,15 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ProductAddSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(
+        queryset=Category.objects.all(), slug_field="slug"
+    )
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
 class ProductCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCartItem

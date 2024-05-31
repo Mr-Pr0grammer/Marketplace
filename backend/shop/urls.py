@@ -3,9 +3,10 @@ from . import views
 
 
 urlpatterns = [
-    path('products/', views.ProductsList.as_view()),
-    path('products/category/<slug:slug>/', views.ProductsListByCategory.as_view()),
-    path('products/price/<str:str>/', views.ProductsListByPrice.as_view()),
+    path('products/', views.ProductsListFilterView.as_view()),
+    # path('products/category/<slug:slug>/', views.ProductsListByCategory.as_view()),
+    # path('products/price/<str:str>/', views.ProductsListByPrice.as_view()),
+    path('products/by_owner/', views.ProductsListByOwner.as_view()),
     path('products/<slug:slug>/', views.GetProduct.as_view()),
 
     path('categories/', views.CategoriesList.as_view()),

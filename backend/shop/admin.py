@@ -13,7 +13,9 @@ class ProductInline(admin.TabularInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    fields = (('name', 'slug'), ('title', 'description'), 'image')
+    fields = (('name', 'slug'),
+              ('title', 'description'),
+              'image')
     list_filter = ('created', 'updated')
     list_display = ('get_image', 'name', 'created', 'updated')
     list_display_links = ('name',)
@@ -32,7 +34,10 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('get_image', 'name', 'category', 'quantity', 'price', 'active', 'created', 'updated')
+    list_display = ('get_image', 'name',
+                    'category', 'quantity',
+                    'price', 'active',
+                    'created', 'updated')
     list_editable = ('quantity', 'price', 'active')
     list_filter = ('active', 'created', 'updated')
     list_per_page = 50
@@ -40,7 +45,10 @@ class ProductAdmin(admin.ModelAdmin):
     search_help_text = 'Enter product name'
     list_display_links = ('name',)
     prepopulated_fields = {'slug': ('name',)}
-    fields = (('category', 'active'), ('name', 'slug'), ('quantity', 'price'), ('discount', 'image'), 'short_description', 'long_description')
+    fields = (('category', 'active'), ('name', 'slug'),
+              ('quantity', 'price'), ('discount', 'image'),
+              'short_description', 'long_description',
+              'owner')
     show_full_result_count = True
 
     def get_image(self, obj):
