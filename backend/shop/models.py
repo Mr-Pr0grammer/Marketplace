@@ -87,7 +87,7 @@ class ProductCartItem(models.Model):
 
 
 class ProductComment(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     title = models.CharField(max_length=50)
     content = models.TextField()

@@ -1,4 +1,4 @@
-from .models import Category, Product, ProductCartItem
+from .models import Category, Product, ProductCartItem, ProductComment
 from rest_framework import serializers
 
 
@@ -30,3 +30,11 @@ class ProductCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductCartItem
         fields = ('product', 'quantity')
+
+
+class ProductCommentSerializer(serializers.ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(),
+                                                 pk_field='id')
+    class Meta:
+        model = ProductComment
+        fields = '__all__'
