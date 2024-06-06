@@ -58,6 +58,7 @@ class ProductsListByOwner(ListAPIView):
 class CategoriesList(ListAPIView):
     queryset = Category.objects.order_by('-updated')
     serializer_class = CategorySerializer
+    # filter_backends = None
 
 
 class GetProduct(RetrieveAPIView):
@@ -127,6 +128,7 @@ class DeleteCartItemsAll(APIView):
 class AddProductView(APIView):
     permission_classes = (IsAuthenticated,)
     parser_classes = (MultiPartParser, FormParser)
+    http_method_names = ['POST']
 
     def post(self, request):
         serializer = ProductAddSerializer(data=request.data)

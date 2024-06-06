@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django_resized import ResizedImageField
-from django.conf import settings
+from django.utils import timezone
 
 
 class Category(models.Model):
@@ -30,9 +30,18 @@ class Product(models.Model):
         ('Active', 'Active'),
         ('Inactive', 'Inactive'),
     ]
+    RATINGS = [
+        ('1', '1 star'),
+        ('2', '2 stars'),
+        ('3', '3 stars'),
+        ('4', '4 stars'),
+        ('5', '5 stars'),
+    ]
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    discount = models.PositiveIntegerField(default=0)
+    discount = models.PositiveIntegerField(default=0, verbose_name='Discount %')
+    discount_due = models.DateTimeField(default=timezone.now)
+    rating = models.CharField(choices=RATINGS, max_length=10, default='1')
     image = ResizedImageField(upload_to='product_pics/', size=[300, 300], blank=True, null=True)
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True, max_length=110)
@@ -75,4 +84,15 @@ class ProductCartItem(models.Model):
     class Meta:
         verbose_name = 'Cart item'
         verbose_name_plural = 'Cart items'
+
+
+class ProductComment(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50)
+    content = models.TextField()
+    sent_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title[:20]
 

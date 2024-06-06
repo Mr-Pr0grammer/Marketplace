@@ -46,9 +46,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_display_links = ('name',)
     prepopulated_fields = {'slug': ('name',)}
     fields = (('category', 'active'), ('name', 'slug'),
-              ('quantity', 'price'), ('discount', 'image'),
+              ('quantity', 'price'), ('discount', 'discount_due'),
               'short_description', 'long_description',
-              'owner')
+              'image', 'rating')
     show_full_result_count = True
 
     def get_image(self, obj):
