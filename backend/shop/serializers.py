@@ -33,8 +33,8 @@ class ProductCartItemSerializer(serializers.ModelSerializer):
 
 
 class ProductCommentSerializer(serializers.ModelSerializer):
-    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all(),
-                                                 pk_field='id')
+    product = serializers.SlugRelatedField(queryset=Product.objects.all(),
+                                           slug_field='slug')
     class Meta:
         model = ProductComment
-        fields = '__all__'
+        fields = ('product', 'title', 'content')

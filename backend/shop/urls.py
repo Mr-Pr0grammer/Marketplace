@@ -7,7 +7,8 @@ urlpatterns = [
     path('products/by_owner/', views.ProductsListByOwner.as_view()),
     path('products/<slug:slug>/', views.GetProduct.as_view()),
 
-    path('product/add_comment/', views.ProductAddCommentView.as_view()),
+    path('product/comments_list/<slug:slug>/', views.ProductCommentView.as_view()),
+    path('product/comments_add/', views.ProductCommentView.as_view()),
 
     path('categories/', views.CategoriesList.as_view()),
 

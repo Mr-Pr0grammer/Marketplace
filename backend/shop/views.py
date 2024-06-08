@@ -130,20 +130,35 @@ class AddProductView(APIView):
             serializer.save(owner=request.user)
             return Response(serializer.data,
                             status=status.HTTP_201_CREATED)
-
         return Response(serializer.errors,
                         status=status.HTTP_400_BAD_REQUEST)
 
 
-class ProductAddCommentView(APIView):
+class ProductCommentView(APIView):
     permission_classes = (IsAuthenticated,)
+
+    def get(self, request, **kwargs):
+        try:
+            slug = kwargs.get('slug')
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        comments = ProductComment.objects.filter(product__slug=slug)
+        count = comments.count()
+        serializer = ProductCommentSerializer(comments, many=True, context={'request': request})
+        return Response(status=status.HTTP_200_OK,
+                        data=[{'count': count}, serializer.data])
 
     def post(self, request):
         serializer = ProductCommentSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(sender=request.user)
-        return Response(status=status.HTTP_201_CREATED,
-                        data=serializer.data)
+        if serializer.is_valid():
+            serializer.save(sender=request.user)
+            return Response(data=serializer.data,
+                            status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 
